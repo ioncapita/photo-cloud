@@ -1,1 +1,34 @@
-<div>DJANGO WITH DOCKER</div>
+{% extends 'base.html' %}
+
+{% block title %}Image Gallery | Photo Cloud{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Image Gallery</h1>
+    <div class="row g-4">
+        {% for image in images %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.title }}" style="object-fit: cover; height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">{{ image.title }}</h5>
+                    <p class="card-text text-truncate" title="{{ image.description }}">{{ image.description }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                    <a href="{% url 'image_detail' image.pk %}" class="btn btn-sm btn-outline-primary">Info +</a>
+                    <a href="{% url 'image_edit' image.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <form action="{% url 'image_delete' image.pk %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-warning text-center" role="alert">
+            No images uploaded yet! <a href="{% url 'upload' %}" class="alert-link">Upload an image</a> to get started.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

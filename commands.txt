@@ -6,3 +6,6 @@ docker-compose run --rm app
 docker-compose up
 
 docker exec -it django_container /bin/bash
+inside of the last comand run
+python manage.py makemigrations photo_cloud
+python manage.py migrate
